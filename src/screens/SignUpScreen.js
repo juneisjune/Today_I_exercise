@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert, Image, TouchableOpacity } from 'react-native';
 import { signUp } from '../api/authApi';
 
 const SignUpScreen = () => {
@@ -24,6 +24,11 @@ const SignUpScreen = () => {
 
     return (
         <View style={styles.container}>
+            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+                <Image source={require('../../assets/images/BackButton.png')} style={styles.backButtonImage} />
+            </TouchableOpacity>
+            <Image source={require('../../assets/images/logo/StartLogo.png')} style={styles.logo} />
+            <Text style={styles.title}>Sign Up</Text>
             <Text style={styles.label}>Email:</Text>
             <TextInput
                 style={styles.input}
@@ -48,8 +53,6 @@ const SignUpScreen = () => {
             <Text style={styles.label}>Phone Number:</Text>
             <TextInput
                 style={styles.input}
-
-
                 value={phoneNumber}
                 onChangeText={setPhoneNumber}
                 keyboardType="phone-pad"
@@ -64,20 +67,30 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 16,
         backgroundColor: '#fff',
-
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    logo: {
+        width: 150,
+        height: 150,
+        marginBottom: 100,
+    },
+    title: {
+        fontSize: 24,
+        marginBottom: 20,
     },
     label: {
         fontSize: 16,
         marginBottom: 8,
-
     },
     input: {
+        width: '100%',
         height: 40,
         borderColor: '#ccc',
         borderWidth: 1,
         marginBottom: 16,
         paddingLeft: 8,
-        borderRadius: 100,
+        borderRadius: 8,
     },
 });
 

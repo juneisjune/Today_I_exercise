@@ -1,4 +1,5 @@
 import axiosInstance from './axiosInstance';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const signUp = async (email, password, nickname, phoneNumber) => {
     try {
@@ -24,6 +25,24 @@ export const login = async (email, password) => {
         return response.data;
     } catch (error) {
         console.error('Error logging in:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+};
+export const getToken = async () => {
+    try {
+        const token = await AsyncStorage.getItem('userToken');
+        return token;
+    } catch (error) {
+        console.error('Error getting token:', error.message);
+        throw error;
+    }
+};
+
+export const logout = async () => {
+    try {
+        await AsyncStorage.removeItem('userToken');
+    } catch (error) {
+        console.error('Error logging out:', error.message);
         throw error;
     }
 };

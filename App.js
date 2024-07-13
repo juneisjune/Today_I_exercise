@@ -1,32 +1,25 @@
+import 'react-native-gesture-handler';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import ProfileScreen from './src/screens/ProfileScreen';
-import ApiTestScreen from './src/screens/ApiTestScreen';
+import { createStackNavigator } from '@react-navigation/stack';
+import SplashScreen from './src/screens/SplashScreen';
+import LoginScreen from './src/screens/LoginScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
-import FeedScreen from './src/api/FeedScreen';
+import MainScreen from './src/screens/MainScreen';
 
-const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
-export default function App() {
+const App = () => {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Feed" component={FeedScreen} />
-        <Tab.Screen name="Profile" component={ProfileScreen} />
-        <Tab.Screen name="API Test" component={ApiTestScreen} />
-        <Tab.Screen name="Sign Up" component={SignUpScreen} />
-      </Tab.Navigator>
+      <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Splash" component={SplashScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="SignUp" component={SignUpScreen} />
+        <Stack.Screen name="Main" component={MainScreen} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};
 
-
-{/* <NavigationContainer>
-<Tab.Navigator>
-  <Tab.Screen name="Feed" component={FeedScreen} />
-  <Tab.Screen name="Profile" component={ProfileScreen} />
-  <Tab.Screen name="API Test" component={ApiTestScreen} />
-  <Tab.Screen name="Sign Up" component={SignUpScreen} />
-</Tab.Navigator>
-</NavigationContainer> */}
+export default App;
