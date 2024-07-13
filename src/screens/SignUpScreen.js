@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, Image, TouchableOpacity } from 'react-native';
 import { signUp } from '../api/authApi';
 
-const SignUpScreen = () => {
+const SignUpScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [nickname, setNickname] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
+
+    const passwordRef = useRef(null);
+    const nicknameRef = useRef(null);
+    const phoneNumberRef = useRef(null);
 
     const handleSignUp = async () => {
         try {
@@ -22,9 +26,13 @@ const SignUpScreen = () => {
         }
     };
 
+    const navigateToLogin = () => {
+        navigation.replace('Login'); // LoginScreen으로 이동
+    };
+
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+            <TouchableOpacity style={styles.backButton} onPress={navigateToLogin}>
                 <Image source={require('../../assets/images/BackButton.png')} style={styles.backButtonImage} />
             </TouchableOpacity>
             <Image source={require('../../assets/images/logo/StartLogo.png')} style={styles.logo} />
@@ -36,26 +44,40 @@ const SignUpScreen = () => {
                 onChangeText={setEmail}
                 keyboardType="email-address"
                 autoCapitalize="none"
+                returnKeyType="next"
+                blurOnSubmit={false}
+                onSubmitEditing={() => passwordRef.current.focus()}
             />
             <Text style={styles.label}>Password:</Text>
             <TextInput
+                ref={passwordRef}
                 style={styles.input}
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
+                returnKeyType="next"
+                blurOnSubmit={false}
+                onSubmitEditing={() => nicknameRef.current.focus()}
             />
             <Text style={styles.label}>Nickname:</Text>
             <TextInput
+                ref={nicknameRef}
                 style={styles.input}
                 value={nickname}
                 onChangeText={setNickname}
+                returnKeyType="next"
+                blurOnSubmit={false}
+                onSubmitEditing={() => phoneNumberRef.current.focus()}
             />
             <Text style={styles.label}>Phone Number:</Text>
             <TextInput
+                ref={phoneNumberRef}
                 style={styles.input}
                 value={phoneNumber}
                 onChangeText={setPhoneNumber}
                 keyboardType="phone-pad"
+                returnKeyType="done"
+                onSubmitEditing={handleSignUp}
             />
             <Button title="Sign Up" onPress={handleSignUp} />
         </View>
@@ -70,10 +92,19 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    backButton: {
+        position: 'absolute',
+        top: 40,
+        left: 20,
+    },
+    backButtonImage: {
+        width: 30,
+        height: 30,
+    },
     logo: {
-        width: 150,
-        height: 150,
-        marginBottom: 100,
+        width: 100,
+        height: 100,
+        marginBottom: 20,
     },
     title: {
         fontSize: 24,
