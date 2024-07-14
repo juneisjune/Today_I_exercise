@@ -1,48 +1,46 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
-import { getToken, logout } from '../api/authApi';
+import React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-const MainScreen = ({ navigation }) => {
-    const [token, setToken] = useState(null);
+// 각 스크린 임포트
+import HomeScreen from './HomeScreen';
+import SearchScreen from './SearchScreen';
+import ChatScreen from './ChatScreen';
+import ProfileScreen from './ProfileScreen';
 
-    useEffect(() => {
-        const fetchToken = async () => {
-            const storedToken = await getToken();
-            setToken(storedToken);
-        };
-        fetchToken();
-    }, []);
+const Tab = createBottomTabNavigator();
 
-    const handleLogout = async () => {
-        await logout();
-        navigation.replace('Login');
-    };
-
+const MainScreen = () => {
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Welcome to Main Screen</Text>
-            {token && <Text style={styles.token}>Token: {token}</Text>}
-            <Button title="Logout" onPress={handleLogout} />
-        </View>
+        <Tab.Navigator
+            screenOptions={({ route }) => ({
+                tabBarIcon: ({ focused, color, size }) => {
+                    let iconName;
+
+                    if (route.name === 'Home') {
+                        iconName = focused ? 'home' : 'home-outline';
+                    } else if (route.name === 'Search') {
+                        iconName = focused ? 'search' : 'search-outline';
+                    } else if (route.name === 'Chat') {
+                        iconName = focused ? 'chatbubble' : 'chatbubble-outline';
+                    } else if (route.name === 'Profile') {
+                        iconName = focused ? 'person' : 'person-outline';
+                    }
+
+                    return <Icon name={iconName} size={size} color={color} />;
+                },
+            })}
+            tabBarOptions={{
+                activeTintColor: 'black',
+                inactiveTintColor: 'gray',
+            }}
+        >
+            <Tab.Screen name="Home" component={HomeScreen} options={{ title: '홈' }} />
+            <Tab.Screen name="Search" component={SearchScreen} options={{ title: '통합검색' }} />
+            <Tab.Screen name="Chat" component={ChatScreen} options={{ title: '채팅' }} />
+            <Tab.Screen name="Profile" component={ProfileScreen} options={{ title: '내정보' }} />
+        </Tab.Navigator>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        padding: 16,
-    },
-    title: {
-        fontSize: 32,
-        marginBottom: 32,
-    },
-    token: {
-        fontSize: 16,
-        marginBottom: 16,
-    },
-});
 
 export default MainScreen;
