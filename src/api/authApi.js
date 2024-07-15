@@ -28,6 +28,7 @@ export const login = async (email, password) => {
         throw error;
     }
 };
+
 export const getToken = async () => {
     try {
         const token = await AsyncStorage.getItem('userToken');
@@ -38,11 +39,68 @@ export const getToken = async () => {
     }
 };
 
+
+
+
+
+export const updateProfileImage = async (imageUri) => {
+    const formData = new FormData();
+    formData.append('image', {
+        uri: imageUri,
+        name: 'profile.jpg',
+        type: 'image/jpeg',
+    });
+
+    try {
+        const response = await axiosInstance.patch('/accounts/profile', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error updating profile image:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+};
 export const logout = async () => {
     try {
         await AsyncStorage.removeItem('userToken');
     } catch (error) {
         console.error('Error logging out:', error.message);
+        throw error;
+    }
+};
+export const updateProfile = async (nickname, name, introduce) => {
+    try {
+        const response = await axiosInstance.patch('/accounts', {
+            nickname: { value: nickname },
+            name,
+            introduce,
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error updating profile:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+};
+export const getProfile = async () => {
+    try {
+        const response = await axiosInstance.get('/accounts/info');
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching profile:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+};
+
+// 회원 탈퇴
+export const deleteUser = async () => {
+    try {
+        const response = await axiosInstance.delete('/accounts');
+        return response.data;
+    } catch (error) {
+        console.error('Error deleting account:', error.response ? error.response.data : error.message);
         throw error;
     }
 };

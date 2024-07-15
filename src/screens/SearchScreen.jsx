@@ -1,11 +1,10 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, View, Text, StyleSheet } from 'react-native';
 
 const SearchScreen = () => {
+    const [keyword, setKeyword] = useState('');
     return (
-        <View style={styles.container}>
-            <Text>Search Screen</Text>
-        </View>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#FFF' }}></SafeAreaView>
     );
 };
 
